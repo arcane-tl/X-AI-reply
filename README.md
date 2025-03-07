@@ -1,4 +1,3 @@
-```markdown
 # X Post Search and Reply
 
 A Python-based desktop application built with `tweepy` and `tkinter` to search for posts on X (Twitter), reply to them, and like them, with a graphical user interface (GUI). The app supports rate limit handling, customizable search options, and detailed logging for API interactions.
