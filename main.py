@@ -3,12 +3,13 @@ import datetime
 from dotenv import load_dotenv
 import os
 import tkinter as tk
-from tkinter import simpledialog, messagebox
+from tkinter import ttk, messagebox
 import time
+import threading
 
 # Constants
 WAIT_TIME_SECONDS = 300  # 5 minutes
-MAX_TWEET_LENGTH = 280  # X's character limit
+MAX_POST_LENGTH = 280  # X's character limit (renamed for consistency)
 MAX_RETRIES = 6  # Maximum retry attempts for rate limits
 
 # Load environment variables from cred.env
@@ -33,10 +34,9 @@ def create_client():
             access_token=ACCESS_TOKEN,
             access_token_secret=ACCESS_TOKEN_SECRET
         )
-        print("Authentication successful.")
         return client
     except Exception as e:
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = get_timestamp()
         print(f"[{timestamp}] Authentication failed: {e}")
         return None
 
@@ -44,130 +44,202 @@ def create_client():
 def get_timestamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# Function to search tweets by keywords and date range with retry on 429
-def search_tweets(client, keywords, start_time, end_time, max_results=10):
-    query = f"{keywords} -is:retweet"
-    print(f"[{get_timestamp()}] Searching with query: {query}, start: {start_time}, end: {end_time}")
-    retries = 0
-    while retries < MAX_RETRIES:
-        try:
-            tweets = client.search_recent_tweets(
-                query=query,
-                start_time=start_time,
-                end_time=end_time,
-                max_results=max_results,
-                tweet_fields=["created_at"],
-                user_fields=["username"],
-                expansions=["author_id"]
-            )
-            print(f"[{get_timestamp()}] Search completed successfully.")
-            return tweets.data if tweets.data else [], tweets.includes.get("users", [])
-        except tweepy.TooManyRequests as e:
-            retries += 1
-            timestamp = get_timestamp()
-            messagebox.showwarning(
-                "Rate Limit",
-                f"[{timestamp}] 429 Too Many Requests: {e}. Waiting 5 minutes before retrying..."
-            )
-            print(f"[{timestamp}] Rate limit hit: {e}. Waiting {WAIT_TIME_SECONDS} seconds.")
-            time.sleep(WAIT_TIME_SECONDS)
-            if retries == MAX_RETRIES:
-                print(f"[{get_timestamp()}] Max retries ({MAX_RETRIES}) reached. Aborting search.")
-                return [], []
-            print(f"[{get_timestamp()}] Retrying search ({retries}/{MAX_RETRIES})...")
-        except tweepy.TweepyException as e:
-            timestamp = get_timestamp()
-            messagebox.showerror("Error", f"[{timestamp}] Search failed: {e}")
-            print(f"[{timestamp}] Search error: {e}")
-            return [], []
+# GUI Application Class
+class TwitterApp:
+    def __init__(self, root, client):
+        self.root = root
+        self.client = client
+        self.root.title("X Post Search and Reply")
+        self.root.geometry("800x800")
 
-# Function to reply to a tweet
-def reply_to_tweet(client, tweet_id, reply_text):
-    try:
-        client.create_tweet(text=reply_text, in_reply_to_tweet_id=tweet_id)
-        print(f"[{get_timestamp()}] Replied to tweet {tweet_id} with: {reply_text}")
-    except Exception as e:
-        timestamp = get_timestamp()
-        print(f"[{timestamp}] Error replying to tweet {tweet_id}: {e}")
+        # Frame for input fields
+        input_frame = ttk.Frame(self.root, padding="10")
+        input_frame.pack(fill="x")
 
-# Function to get user input for search parameters
-def get_user_input(root):
-    start_time_str = simpledialog.askstring(
-        "Input",
-        "Enter start date and time (YYYY-MM-DD HH:MM, e.g., 2025-03-01 14:30):",
-        parent=root
-    )
-    if not start_time_str:
-        messagebox.showwarning("Input Error", "Start time is required.")
-        return None
+        # Start time
+        ttk.Label(input_frame, text="Start Date/Time (YYYY-MM-DD HH:MM):").grid(row=0, column=0, sticky="w")
+        self.start_entry = ttk.Entry(input_frame)
+        self.start_entry.grid(row=0, column=1, sticky="ew")
+        self.start_entry.insert(0, "2025-03-01 14:30")
 
-    end_time_str = simpledialog.askstring(
-        "Input",
-        "Enter end date and time (YYYY-MM-DD HH:MM, e.g., 2025-03-06 23:59):",
-        parent=root
-    )
-    if not end_time_str:
-        messagebox.showwarning("Input Error", "End time is required.")
-        return None
+        # End time
+        ttk.Label(input_frame, text="End Date/Time (YYYY-MM-DD HH:MM):").grid(row=1, column=0, sticky="w")
+        self.end_entry = ttk.Entry(input_frame)
+        self.end_entry.grid(row=1, column=1, sticky="ew")
+        self.end_entry.insert(0, "2025-03-06 23:59")
 
-    keywords = simpledialog.askstring(
-        "Input",
-        "Enter keywords (e.g., python xai):",
-        parent=root
-    )
-    if not keywords:
-        messagebox.showwarning("Input Error", "Keywords are required.")
-        return None
+        # Keywords
+        ttk.Label(input_frame, text="Keywords:").grid(row=2, column=0, sticky="w")
+        self.keyword_entry = ttk.Entry(input_frame, width=40)  # Doubled size (default is ~20)
+        self.keyword_entry.grid(row=2, column=1, sticky="ew")
+        self.keyword_entry.insert(0, "python xai")
 
-    try:
-        start_time = datetime.datetime.strptime(start_time_str, "%Y-%m-%d %H:%M").replace(
-            tzinfo=datetime.timezone.utc
-        ).isoformat()
-        end_time = datetime.datetime.strptime(end_time_str, "%Y-%m-%d %H:%M").replace(
-            tzinfo=datetime.timezone.utc
-        ).isoformat()
+        # Search button (aligned with keywords)
+        self.search_button = ttk.Button(input_frame, text="Search Posts", command=self.search_posts_thread)
+        self.search_button.grid(row=2, column=2, padx=10)
+
+        # Post display frame with scrollbar
+        ttk.Label(self.root, text="Found Posts (uncheck to exclude from replies):").pack()
+        self.post_frame = ttk.Frame(self.root)
+        self.post_frame.pack(fill="both", expand=True, pady=5)
+        self.canvas = tk.Canvas(self.post_frame)
+        self.scrollbar = ttk.Scrollbar(self.post_frame, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
         
-        if datetime.datetime.fromisoformat(end_time) <= datetime.datetime.fromisoformat(start_time):
-            raise ValueError("End time must be after start time.")
-    except ValueError as e:
-        timestamp = get_timestamp()
-        messagebox.showerror("Time Error", f"[{timestamp}] Invalid format or logic: {e}. Use YYYY-MM-DD HH:MM.")
-        return None
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
 
-    return keywords, start_time, end_time
+        # Reply text
+        ttk.Label(self.root, text=f"Reply Text (max {MAX_POST_LENGTH} chars):").pack()
+        self.reply_text = tk.Text(self.root, height=4, width=100)
+        self.reply_text.pack(pady=5)
 
-# Function to ask if user wants to reply and get reply text with length validation
-def prompt_for_reply(root, tweets, users):
-    user_dict = {user.id: user.username for user in users}
-    tweet_summary = "\n\n".join([
-        f"@{user_dict.get(tweet.author_id, 'Unknown')}: {tweet.text}"
-        for tweet in tweets
-    ])
-    
-    reply_choice = messagebox.askyesno(
-        "Tweets Found",
-        f"Found {len(tweets)} tweets:\n\n{tweet_summary}\n\nDo you want to reply to these tweets?"
-    )
+        # Reply button (initially disabled)
+        self.reply_button = ttk.Button(self.root, text="Submit Replies", command=self.submit_replies, state="disabled")
+        self.reply_button.pack(pady=5)
 
-    if reply_choice:
-        while True:
-            reply_text = simpledialog.askstring(
-                "Reply",
-                f"Enter the reply text (max {MAX_TWEET_LENGTH} chars):",
-                parent=root
-            )
-            if not reply_text:
-                messagebox.showwarning("Input Error", "Reply text is required.")
-                return None
-            if len(reply_text) > MAX_TWEET_LENGTH:
-                messagebox.showwarning(
-                    "Length Error",
-                    f"Reply exceeds {MAX_TWEET_LENGTH} characters ({len(reply_text)}). Shorten it."
+        # Status label
+        self.status_var = tk.StringVar()
+        self.status_label = ttk.Label(self.root, textvariable=self.status_var)
+        self.status_label.pack(pady=5)
+
+        # Store posts and their checkbox states
+        self.post_check_vars = []  # List of (post, IntVar) tuples
+
+    def update_status(self, message):
+        self.status_var.set(f"[{get_timestamp()}] {message}")
+        self.root.update_idletasks()
+
+    def validate_inputs(self):
+        try:
+            start_time = datetime.datetime.strptime(self.start_entry.get(), "%Y-%m-%d %H:%M").replace(
+                tzinfo=datetime.timezone.utc
+            ).isoformat()
+            end_time = datetime.datetime.strptime(self.end_entry.get(), "%Y-%m-%d %H:%M").replace(
+                tzinfo=datetime.timezone.utc
+            ).isoformat()
+            if datetime.datetime.fromisoformat(end_time) <= datetime.datetime.fromisoformat(start_time):
+                raise ValueError("End time must be after start time.")
+            keywords = self.keyword_entry.get().strip()
+            if not keywords:
+                raise ValueError("Keywords are required.")
+            return keywords, start_time, end_time
+        except ValueError as e:
+            self.update_status(f"Input error: {e}")
+            return None
+
+    def search_posts(self):
+        # Clear previous posts
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        self.post_check_vars.clear()
+        self.reply_button.config(state="disabled")
+
+        user_input = self.validate_inputs()
+        if user_input is None:
+            return
+
+        keywords, start_time, end_time = user_input
+        today = datetime.datetime.now(datetime.timezone.utc)
+        seven_days_ago = today - datetime.timedelta(days=7)
+        if datetime.datetime.fromisoformat(start_time) < seven_days_ago:
+            messagebox.showwarning("Date Warning", "Start time is older than 7 days. Free tier only supports recent posts.")
+
+        retries = 0
+        while retries < MAX_RETRIES:
+            try:
+                self.update_status(f"Searching with query: {keywords} -is:retweet")
+                posts = self.client.search_recent_tweets(
+                    query=f"{keywords} -is:retweet",
+                    start_time=start_time,
+                    end_time=end_time,
+                    max_results=10,
+                    tweet_fields=["created_at"],
+                    user_fields=["username"],
+                    expansions=["author_id"]
                 )
-            else:
+                self.posts = posts.data if posts.data else []
+                self.users = posts.includes.get("users", [])
+                self.update_status(f"Found {len(self.posts)} posts")
                 break
-        return reply_text
-    return None
+            except tweepy.TooManyRequests as e:
+                retries += 1
+                self.update_status(f"Rate limit hit: {e}. Waiting {WAIT_TIME_SECONDS//60} minutes...")
+                time.sleep(WAIT_TIME_SECONDS)
+                if retries == MAX_RETRIES:
+                    self.update_status(f"Max retries ({MAX_RETRIES}) reached. Aborting search.")
+                    self.posts = []
+                    self.users = []
+                    return
+                self.update_status(f"Retrying search ({retries}/{MAX_RETRIES})...")
+            except tweepy.TweepyException as e:
+                self.update_status(f"Search failed: {e}")
+                return
+
+        if self.posts:
+            user_dict = {user.id: user.username for user in self.users}
+            for i, post in enumerate(self.posts):
+                username = user_dict.get(post.author_id, "Unknown")
+                post_frame = ttk.Frame(self.scrollable_frame)
+                post_frame.pack(fill="x", pady=2)
+                
+                # Checkbox
+                check_var = tk.IntVar(value=1)  # Checked by default
+                checkbox = ttk.Checkbutton(post_frame, variable=check_var)
+                checkbox.pack(side="left")
+                
+                # Post text
+                post_label = ttk.Label(
+                    post_frame,
+                    text=f"@{username}: {post.text}\n[Posted at: {post.created_at}]",
+                    wraplength=600,
+                    justify="left"
+                )
+                post_label.pack(side="left", fill="x", expand=True)
+                
+                self.post_check_vars.append((post, check_var))
+            
+            self.reply_button.config(state="normal")
+        else:
+            ttk.Label(self.scrollable_frame, text="No posts found.").pack()
+
+    def search_posts_thread(self):
+        self.search_button.config(state="disabled")
+        threading.Thread(target=self.search_wrapper, daemon=True).start()
+
+    def search_wrapper(self):
+        self.search_posts()
+        self.search_button.config(state="normal")
+
+    def submit_replies(self):
+        reply_text = self.reply_text.get("1.0", tk.END).strip()
+        if not reply_text:
+            messagebox.showwarning("Input Error", "Reply text is required.")
+            return
+        if len(reply_text) > MAX_POST_LENGTH:
+            messagebox.showwarning("Length Error", f"Reply exceeds {MAX_POST_LENGTH} characters ({len(reply_text)}). Shorten it.")
+            return
+
+        selected_posts = [post for post, var in self.post_check_vars if var.get() == 1]
+        if not selected_posts:
+            self.update_status("No posts selected for reply.")
+            return
+
+        for post in selected_posts:
+            try:
+                self.client.create_tweet(text=reply_text, in_reply_to_tweet_id=post.id)
+                self.update_status(f"Replied to post {post.id}")
+            except Exception as e:
+                self.update_status(f"Error replying to post {post.id}: {e}")
+        self.update_status("Replies posted successfully.")
+        self.reply_button.config(state="disabled")
 
 # Main execution
 if __name__ == "__main__":
@@ -176,44 +248,5 @@ if __name__ == "__main__":
         print(f"[{get_timestamp()}] Exiting due to authentication failure.")
     else:
         root = tk.Tk()
-        root.withdraw()
-
-        user_input = get_user_input(root)
-        if user_input is None:
-            print(f"[{get_timestamp()}] User canceled or invalid input provided. Exiting.")
-        else:
-            keywords, start_time, end_time = user_input
-            
-            today = datetime.datetime.now(datetime.timezone.utc)
-            seven_days_ago = today - datetime.timedelta(days=7)
-            start_dt = datetime.datetime.fromisoformat(start_time)
-            if start_dt < seven_days_ago:
-                messagebox.showwarning(
-                    "Date Warning",
-                    "Start time is older than 7 days. Free tier only supports recent tweets."
-                )
-
-            tweets, users = search_tweets(client, keywords, start_time, end_time)
-            
-            if tweets:
-                print(f"[{get_timestamp()}] Found {len(tweets)} tweets:")
-                user_dict = {user.id: user.username for user in users}
-                for tweet in tweets:
-                    username = user_dict.get(tweet.author_id, "Unknown")
-                    print(f"@{username}: {tweet.text}")
-                    print(f"Posted at: {tweet.created_at}")
-                    print("-" * 50)
-                
-                reply_text = prompt_for_reply(root, tweets, users)
-                if reply_text:
-                    for tweet in tweets:
-                        reply_to_tweet(client, tweet.id, reply_text)
-                    print(f"[{get_timestamp()}] Replies posted successfully.")
-                else:
-                    print(f"[{get_timestamp()}] User chose not to reply. Exiting.")
-            else:
-                timestamp = get_timestamp()
-                messagebox.showinfo("No Results", f"[{timestamp}] No tweets found matching the criteria.")
-                print(f"[{timestamp}] No tweets found. Exiting.")
-
-        root.destroy()
+        app = TwitterApp(root, client)
+        root.mainloop()
