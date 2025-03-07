@@ -3,5 +3,5 @@
     "verified_only": true,
     "no_replies": true,
     "retry_interval": 1800,
-    "debug_mode": true
+    "debug_mode": false
 }

@@ -489,10 +489,24 @@ class xApp:
             else:
                 time.sleep(1)
 
-    def calculate_retry_delay(self, response: Optional[requests.Response], call_type: str, retries: int) -> float:
+    def calculate_retry_delay(self, response, call_type: str, retries: int) -> float:
         """Calculate retry delay based on API response headers or fallback."""
-        headers = getattr(response, 'headers', {}) if response else {}
-        self.debug_log(f"Full response headers for {call_type}: {dict(headers)}")
+        headers = {}
+        if response is not None:
+            if isinstance(response, requests.models.Response):
+                try:
+                    headers = dict(response.headers)
+                    self.debug_log(f"Headers from requests response: {dict(headers)}")
+                except Exception as e:
+                    self.debug_log(f"Error accessing headers from requests response: {e}")
+            elif hasattr(response, 'headers'):
+                try:
+                    headers = dict(response.headers)
+                    self.debug_log(f"Headers from tweepy response: {dict(headers)}")
+                except Exception as e:
+                    self.debug_log(f"Error accessing headers from tweepy response: {e}")
+            else:
+                self.debug_log(f"Response object has no headers attribute: {type(response)}")
 
         # Check for 24-hour user limit reset
         if 'x-user-limit-24hour-reset' in headers:
@@ -506,8 +520,6 @@ class xApp:
                 return delay
             except ValueError as e:
                 self.debug_log(f"Failed to parse x-user-limit-24hour-reset: '{reset_time}' - Error: {e}")
-        else:
-            self.debug_log("x-user-limit-24hour-reset header not present in response")
 
         # Check for standard rate limit reset
         if 'x-rate-limit-reset' in headers:
@@ -521,8 +533,6 @@ class xApp:
                 return delay
             except ValueError as e:
                 self.debug_log(f"Failed to parse x-rate-limit-reset: '{reset_time}' - Error: {e}")
-        else:
-            self.debug_log("x-rate-limit-reset header not present in response")
 
         # Fallback to user-defined options
         license_level = self.license_level.get()
@@ -638,7 +648,6 @@ class xApp:
             self.handle_retry('reply', params, None, e, 'POST /2/tweets', start_time)
 
     def perform_like(self, params: Dict[str, Any]):
-        """Like an X post."""
         if not self.ensure_client():
             return
 
@@ -650,13 +659,15 @@ class xApp:
             self.debug_log(f"Attempting to like post {params['post_id']} (retry attempt {params.get('retries', 0) + 1}/{APIConfig.MAX_RETRIES})")
             response, success = self.execute_api_call(like_call, 'POST /2/users/:id/likes')
             self.update_status(f"Liked post {params['post_id']}")
-        except (tweepy.TooManyRequests, requests.exceptions.HTTPError) as e:
-            is_rate_limit = isinstance(e, tweepy.TooManyRequests) or (hasattr(e, 'response') and e.response.status_code == 429)
-            self.update_status("Like rate limit exceeded" if is_rate_limit else "Like failed")
-            self.handle_retry('like', params, getattr(e, 'response', None), e, 'POST /2/users/:id/likes', start_time)
-        except Exception as e:
+        except tweepy.TooManyRequests as e:
+            duration = time.time() - start_time
+            self.logger.log_call('POST /2/users/:id/likes', duration, None)
+            self.debug_log(f"TooManyRequests error: {e}")
+            self.update_status("Like rate limit exceeded")
+            self.handle_retry('like', params, e.response, e, 'POST /2/users/:id/likes', start_time)
+        except (requests.exceptions.HTTPError, tweepy.TweepyException) as e:
             self.update_status("Like failed")
-            self.handle_retry('like', params, None, e, 'POST /2/users/:id/likes', start_time)
+            self.handle_retry('like', params, getattr(e, 'response', None), e, 'POST /2/users/:id/likes', start_time)
 
     def update_search_results(self):
         """Update the GUI with search results."""

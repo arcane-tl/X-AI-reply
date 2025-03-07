@@ -259,98 +259,86 @@
     },
     {
         "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T20:45:31.501904",
-        "duration": 0.30049610137939453,
+        "timestamp": "2025-03-07T21:43:58.075853",
+        "duration": 0.23556280136108398,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T21:54:56.425694",
+        "duration": 0.3249361515045166,
+        "response": "{'data': [{'author_id': '119169760', 'id': '1897816228690895025', 'created_at': '2025-03-07T01:07:03.000Z', 'edit_history_tweet_ids': ['1897816228690895025'], 'text': '\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'}, {'author_id': '1821322404896878594', 'id': '1896710761231056910', 'created_at': '2025-03-03T23:54:19.000Z', 'edit_history_tweet_ids': ['1896710761231056910'], 'text': 'Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'}], 'includes': {'users': [{'id': '119169760', 'name': 'Matias E. Ruiz', 'username': 'MatiasERuiz'}, {'id': '1821322404896878594', 'name': 'BAYN \ud83d\udd8b\ufe0f', 'username': 'baynPSD'}]}, 'meta': {'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2}}"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T21:58:26.280237",
+        "duration": 0.24399089813232422,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T21:58:26.304995",
+        "duration": 0.2692558765411377,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T22:10:14.651564",
+        "duration": 0.29674673080444336,
         "response": "<Response [200]>"
     },
     {
         "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T20:45:55.058200",
-        "duration": 0.2290482521057129,
+        "timestamp": "2025-03-07T22:14:55.312749",
+        "duration": 0.23462629318237305,
         "response": "Failed"
     },
     {
         "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T20:45:55.080109",
-        "duration": 0.25101518630981445,
+        "timestamp": "2025-03-07T22:14:55.336952",
+        "duration": 0.2592504024505615,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T22:14:55.365381",
+        "duration": 0.28768181800842285,
         "response": "Failed"
     },
     {
         "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:04:16.111001",
-        "duration": 0.3006150722503662,
+        "timestamp": "2025-03-07T22:15:36.241368",
+        "duration": 0.22822952270507812,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T22:15:36.266234",
+        "duration": 0.25319766998291016,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T22:25:32.596878",
+        "duration": 0.3002324104309082,
         "response": "<Response [200]>"
     },
     {
         "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:04:21.685907",
-        "duration": 0.23658037185668945,
+        "timestamp": "2025-03-07T22:25:41.173278",
+        "duration": 0.23417210578918457,
         "response": "Failed"
     },
     {
         "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:04:21.711216",
-        "duration": 0.26194071769714355,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:05:26.451821",
-        "duration": 0.23596978187561035,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:05:26.476342",
-        "duration": 0.2605712413787842,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:24:38.496191",
-        "duration": 0.29899168014526367,
-        "response": "<Response [200]>"
-    },
-    {
-        "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:24:46.071766",
-        "duration": 0.23746562004089355,
+        "timestamp": "2025-03-07T22:25:41.199540",
+        "duration": 0.26049160957336426,
         "response": "Failed"
     },
     {
         "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:24:46.096173",
-        "duration": 0.2619321346282959,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:32:53.690091",
-        "duration": 0.24790120124816895,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:32:53.714390",
-        "duration": 0.27230310440063477,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "GET /2/tweets/search/recent",
-        "timestamp": "2025-03-07T21:39:38.524603",
-        "duration": 0.2978701591491699,
-        "response": "<Response [200]>"
-    },
-    {
-        "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:39:54.115946",
-        "duration": 0.23918628692626953,
-        "response": "Failed"
-    },
-    {
-        "api_ref": "POST /2/users/:id/likes",
-        "timestamp": "2025-03-07T21:39:54.139824",
-        "duration": 0.2635464668273926,
+        "timestamp": "2025-03-07T22:25:41.230291",
+        "duration": 0.2912423610687256,
         "response": "Failed"
     }
 ]
