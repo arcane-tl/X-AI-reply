@@ -1,0 +1,7 @@
+{
+    "license_level": "Free",
+    "verified_only": true,
+    "no_replies": true,
+    "retry_interval": 1800,
+    "debug_mode": false
+}

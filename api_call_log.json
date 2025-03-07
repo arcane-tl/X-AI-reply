@@ -1,0 +1,260 @@
+[
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T16:14:36.495059",
+        "duration": 0.23612236976623535,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T16:19:36.712452",
+        "duration": 0.2146162986755371,
+        "response": "Response(data=[<Tweet id=1897816228690895025 text='\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'>, <Tweet id=1896710761231056910 text='Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'>], includes={'users': [<User id=119169760 name=Matias E. Ruiz username=MatiasERuiz>, <User id=1821322404896878594 name=BAYN \ud83d\udd8b\ufe0f username=baynPSD>]}, errors=[], meta={'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2})"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:20:35.306279",
+        "duration": 0.25196218490600586,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:25:35.462347",
+        "duration": 0.15007352828979492,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:30:35.712047",
+        "duration": 0.24366235733032227,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:35:35.872622",
+        "duration": 0.1544811725616455,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:40:36.106350",
+        "duration": 0.22771978378295898,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:45:36.267641",
+        "duration": 0.1550769805908203,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T16:46:23.784045",
+        "duration": 0.31153035163879395,
+        "response": "Response(data=[<Tweet id=1897816228690895025 text='\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'>, <Tweet id=1896710761231056910 text='Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'>], includes={'users': [<User id=119169760 name=Matias E. Ruiz username=MatiasERuiz>, <User id=1821322404896878594 name=BAYN \ud83d\udd8b\ufe0f username=baynPSD>]}, errors=[], meta={'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2})"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T16:46:38.241633",
+        "duration": 0.14854025840759277,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T16:59:15.036357",
+        "duration": 0.24292993545532227,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T17:01:23.992371",
+        "duration": 0.20764565467834473,
+        "response": "Response(data=[<Tweet id=1897816228690895025 text='\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'>, <Tweet id=1896710761231056910 text='Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'>], includes={'users': [<User id=119169760 name=Matias E. Ruiz username=MatiasERuiz>, <User id=1821322404896878594 name=BAYN \ud83d\udd8b\ufe0f username=baynPSD>]}, errors=[], meta={'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2})"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T17:07:53.680812",
+        "duration": 0.244598388671875,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T17:37:53.922599",
+        "duration": 0.23129606246948242,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T17:40:53.723059",
+        "duration": 0.297806978225708,
+        "response": "Response(data=[<Tweet id=1897816228690895025 text='\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'>, <Tweet id=1896710761231056910 text='Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'>], includes={'users': [<User id=119169760 name=Matias E. Ruiz username=MatiasERuiz>, <User id=1821322404896878594 name=BAYN \ud83d\udd8b\ufe0f username=baynPSD>]}, errors=[], meta={'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2})"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T17:41:01.179679",
+        "duration": 0.14650487899780273,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T17:59:03.235219",
+        "duration": 0.3067038059234619,
+        "response": "Response(data=[<Tweet id=1897816228690895025 text='\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'>, <Tweet id=1896710761231056910 text='Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'>], includes={'users': [<User id=119169760 name=Matias E. Ruiz username=MatiasERuiz>, <User id=1821322404896878594 name=BAYN \ud83d\udd8b\ufe0f username=baynPSD>]}, errors=[], meta={'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2})"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T17:59:29.524846",
+        "duration": 0.2424759864807129,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:03:17.962094",
+        "duration": 0.23135089874267578,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:05:31.989314",
+        "duration": 0.2312784194946289,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:06:35.827796",
+        "duration": 0.2234809398651123,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:08:56.430997",
+        "duration": 0.23213481903076172,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:11:14.673681",
+        "duration": 0.23660516738891602,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:13:38.750686",
+        "duration": 0.23795604705810547,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:17:39.271009",
+        "duration": 0.2967228889465332,
+        "response": "{'data': [{'id': '1897816228690895025', 'text': '\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h', 'edit_history_tweet_ids': ['1897816228690895025'], 'created_at': '2025-03-07T01:07:03.000Z', 'author_id': '119169760'}, {'id': '1896710761231056910', 'text': 'Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6', 'edit_history_tweet_ids': ['1896710761231056910'], 'created_at': '2025-03-03T23:54:19.000Z', 'author_id': '1821322404896878594'}], 'includes': {'users': [{'id': '119169760', 'name': 'Matias E. Ruiz', 'username': 'MatiasERuiz'}, {'id': '1821322404896878594', 'name': 'BAYN \ud83d\udd8b\ufe0f', 'username': 'baynPSD'}]}, 'meta': {'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2}}"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:17:57.674990",
+        "duration": 0.2397902011871338,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:21:05.938909",
+        "duration": 0.23685097694396973,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:23:09.119080",
+        "duration": 0.23047995567321777,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:40:44.051482",
+        "duration": 0.22599005699157715,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:49:53.150632",
+        "duration": 0.23310542106628418,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T18:50:22.455886",
+        "duration": 0.2811136245727539,
+        "response": "{'data': [{'id': '1897816228690895025', 'edit_history_tweet_ids': ['1897816228690895025'], 'author_id': '119169760', 'created_at': '2025-03-07T01:07:03.000Z', 'text': '\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'}, {'id': '1896710761231056910', 'edit_history_tweet_ids': ['1896710761231056910'], 'author_id': '1821322404896878594', 'created_at': '2025-03-03T23:54:19.000Z', 'text': 'Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'}], 'includes': {'users': [{'id': '119169760', 'name': 'Matias E. Ruiz', 'username': 'MatiasERuiz'}, {'id': '1821322404896878594', 'name': 'BAYN \ud83d\udd8b\ufe0f', 'username': 'baynPSD'}]}, 'meta': {'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T18:50:40.033982",
+        "duration": 0.24311399459838867,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T19:05:47.309851",
+        "duration": 0.24618291854858398,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T19:20:54.578821",
+        "duration": 0.2375798225402832,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T19:36:02.835456",
+        "duration": 0.2273082733154297,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T19:51:11.103536",
+        "duration": 0.23888206481933594,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T20:06:18.365187",
+        "duration": 0.2312941551208496,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T20:11:56.679549",
+        "duration": 0.29804062843322754,
+        "response": "{'data': [{'id': '1897816228690895025', 'author_id': '119169760', 'created_at': '2025-03-07T01:07:03.000Z', 'edit_history_tweet_ids': ['1897816228690895025'], 'text': '\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h'}, {'id': '1896710761231056910', 'author_id': '1821322404896878594', 'created_at': '2025-03-03T23:54:19.000Z', 'edit_history_tweet_ids': ['1896710761231056910'], 'text': 'Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6'}], 'includes': {'users': [{'id': '119169760', 'name': 'Matias E. Ruiz', 'username': 'MatiasERuiz'}, {'id': '1821322404896878594', 'name': 'BAYN \ud83d\udd8b\ufe0f', 'username': 'baynPSD'}]}, 'meta': {'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T20:12:03.237946",
+        "duration": 0.23705124855041504,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T20:17:50.388728",
+        "duration": 0.2415933609008789,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T20:25:27.484533",
+        "duration": 0.23317742347717285,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-07T20:27:14.785242",
+        "duration": 0.27847743034362793,
+        "response": "{'data': [{'author_id': '119169760', 'text': '\u2018Apocalypse Now!\u2019; esbozo de videogame bastante pavo, con asistencia de Grok 3. Script desarrollado por la AI en Python, empleando la librer\u00eda Pygame.\\n\\nEl jugador deber\u00e1 regular temperatura, refrigerante y agregar o descartar barras de control, a efectos de impedir una fusi\u00f3n del\u2026 https://t.co/Ue79X6y2Kl https://t.co/jEpRtBK72h', 'id': '1897816228690895025', 'created_at': '2025-03-07T01:07:03.000Z', 'edit_history_tweet_ids': ['1897816228690895025']}, {'author_id': '1821322404896878594', 'text': 'Grok-3 isn\u2019t just AI\u2014it\u2019s redefining game development. \ud83c\udfae\\n\\n@Gamegptofficial has been pushing AI-powered gaming, and Grok-3 takes it even further.\\n\\n\u21e2 Portal 2 rebuilt in PyGame? \u2714\ufe0f Done.\\n\u21e2 Arcade classics generated from scratch? \u2714\ufe0f Easy.\\n\u21e2 Prototypes in hours, not weeks? \u2714\ufe0f\u2026 https://t.co/whfFN3Pnf6', 'id': '1896710761231056910', 'created_at': '2025-03-03T23:54:19.000Z', 'edit_history_tweet_ids': ['1896710761231056910']}], 'includes': {'users': [{'id': '119169760', 'name': 'Matias E. Ruiz', 'username': 'MatiasERuiz'}, {'id': '1821322404896878594', 'name': 'BAYN \ud83d\udd8b\ufe0f', 'username': 'baynPSD'}]}, 'meta': {'newest_id': '1897816228690895025', 'oldest_id': '1896710761231056910', 'result_count': 2}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-07T20:30:30.393785",
+        "duration": 0.22960734367370605,
+        "response": "Failed"
+    }
+]
