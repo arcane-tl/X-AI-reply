@@ -136,6 +136,9 @@ class xApp:
         self.context_menu.add_command(label="Copy", command=self._copy_selected_text)
         self.context_menu.add_command(label="Select All", command=self._select_all_text)
 
+        # Create menu bar
+        self._setup_menu_bar()
+
         # Initialize retry tracking
         self.current_retry_thread = None
         self.retry_cancelled = False
@@ -196,8 +199,13 @@ class xApp:
 
     def _setup_action_frame(self):
         self.reply_var = tk.BooleanVar(value=False)
-        self.reply_check = ttk.Checkbutton(self.action_frame, text="Reply to posts", variable=self.reply_var)
+        self.reply_check = ttk.Checkbutton(self.action_frame, text="Reply to posts", variable=self.reply_var,
+                                         command=self.toggle_reply_text)
         self.reply_check.pack(anchor="w", pady=(0, 5))
+
+        # Reply text input (initially disabled)
+        self.reply_text = tk.Text(self.action_frame, height=3, wrap="word", state="disabled")
+        self.reply_text.pack(fill="x", pady=(0, 10))
 
         self.like_var = tk.BooleanVar(value=False)
         ttk.Checkbutton(self.action_frame, text="Like posts", variable=self.like_var).pack(anchor="w", pady=(0, 10))
@@ -265,7 +273,7 @@ class xApp:
         self.reply_text.config(state=state)
 
     def open_options(self):
-        self._show_options_window()
+        OptionsWindow(self.root, self)
 
     def show_stats(self):
         stats_window = tk.Toplevel(self.root)
@@ -415,11 +423,17 @@ class xApp:
             logger.warning("Search request timed out")
             self.handle_retry('search', params, None, Exception("Timeout"), 'GET /2/tweets/search/recent', start_time)
         except requests.exceptions.HTTPError as e:
-            error_code = e.response.status_code
-            if error_code == 429:
-                self.update_status("⚠️ Search rate limit exceeded. Will retry after reset time...")
+            error_details = self._format_api_error_details(
+                f"Search HTTP Error ({e.response.status_code})",
+                "GET /2/tweets/search/recent",
+                params_dict,
+                e.response,
+                str(e)
+            )
+            if e.response.status_code == 429:
+                self.update_status(f"⚠️ Rate limit exceeded: {error_details}")
             else:
-                self.update_status(f"⚠️ Search failed with HTTP {error_code}. Will retry automatically...")
+                self.update_status(f"⚠️ Search failed: {error_details}")
             logger.error(f"Search HTTP error: {e}")
             self.handle_retry('search', params, e.response, e, 'GET /2/tweets/search/recent', start_time)
         except Exception as e:
@@ -445,22 +459,27 @@ class xApp:
             self.update_status(f"Successfully replied to post {params['post_id']}")
             logger.info(f"Reply successful for post {params['post_id']}")
         except Exception as e:
-            error_msg = str(e)
-            if hasattr(e, 'response') and e.response:
-                try:
-                    error_data = e.response.json()
-                    if 'errors' in error_data:
-                        error_msg = error_data['errors'][0].get('message', error_msg)
-                except:
-                    pass
+            # Create request details for error formatting
+            request_details = {
+                'text': params['text'][:50] + "..." if len(params['text']) > 50 else params['text'],
+                'in_reply_to_tweet_id': params['post_id']
+            }
+
+            error_details = self._format_api_error_details(
+                "Reply Error",
+                "POST /2/tweets",
+                request_details,
+                getattr(e, 'response', None),
+                str(e)
+            )
 
             # Check if it's a rate limit error
             if hasattr(e, 'response') and e.response and e.response.status_code == 429:
-                self.update_status(f"⚠️ Reply rate limit exceeded: {error_msg}. Will retry after reset time...")
+                self.update_status(f"⚠️ Reply rate limit exceeded: {error_details}")
             else:
-                self.update_status(f"⚠️ Reply failed: {error_msg}. Will retry automatically...")
+                self.update_status(f"⚠️ Reply failed: {error_details}")
 
-            logger.error(f"Reply failed for post {params['post_id']}: {error_msg}")
+            logger.error(f"Reply failed for post {params['post_id']}: {str(e)}")
             self.handle_retry('reply', params, getattr(e, 'response', None), e, 'POST /2/tweets', start_time)
 
     def perform_like(self, params):
@@ -481,22 +500,26 @@ class xApp:
             self.update_status(f"Successfully liked post {params['post_id']}")
             logger.info(f"Like successful for post {params['post_id']}")
         except Exception as e:
-            error_msg = str(e)
-            if hasattr(e, 'response') and e.response:
-                try:
-                    error_data = e.response.json()
-                    if 'errors' in error_data:
-                        error_msg = error_data['errors'][0].get('message', error_msg)
-                except:
-                    pass
+            # Create request details for error formatting
+            request_details = {
+                'tweet_id': params['post_id']
+            }
+
+            error_details = self._format_api_error_details(
+                "Like Error",
+                "POST /2/users/:id/likes",
+                request_details,
+                getattr(e, 'response', None),
+                str(e)
+            )
 
             # Check if it's a rate limit error
             if hasattr(e, 'response') and e.response and e.response.status_code == 429:
-                self.update_status(f"⚠️ Like rate limit exceeded: {error_msg}. Will retry after reset time...")
+                self.update_status(f"⚠️ Like rate limit exceeded: {error_details}")
             else:
-                self.update_status(f"⚠️ Like failed: {error_msg}. Will retry automatically...")
+                self.update_status(f"⚠️ Like failed: {error_details}")
 
-            logger.error(f"Like failed for post {params['post_id']}: {error_msg}")
+            logger.error(f"Like failed for post {params['post_id']}: {str(e)}")
             self.handle_retry('like', params, getattr(e, 'response', None), e, 'POST /2/users/:id/likes', start_time)
 
     def update_search_results(self):
@@ -710,85 +733,7 @@ class xApp:
         self.root.after(0, lambda: self.retry_progress.config(value=0))
         self.root.after(0, lambda: self.cancel_retry_button.config(state="disabled"))
 
-    def _show_options_window(self):
-        """Show the options configuration window"""
-        options_window = tk.Toplevel(self.root)
-        options_window.title("Options")
-        options_window.geometry("400x500")
-        options_window.transient(self.root)
-        options_window.grab_set()
 
-        content_frame = ttk.Frame(options_window, padding=10)
-        content_frame.pack(fill="both", expand=True)
-
-        # Search Options
-        ttk.Label(content_frame, text="Search Options:", font=("TkDefaultFont", 10, "bold")).pack(anchor="w", pady=(0, 5))
-        verified_var = tk.BooleanVar(value=self.verified_only.get())
-        ttk.Checkbutton(content_frame, text="Search only for verified accounts", variable=verified_var).pack(anchor="w")
-        no_replies_var = tk.BooleanVar(value=self.no_replies.get())
-        ttk.Checkbutton(content_frame, text="Exclude replies in search", variable=no_replies_var).pack(anchor="w")
-
-        # Max search results
-        max_results_frame = ttk.Frame(content_frame)
-        max_results_frame.pack(fill="x", pady=(5, 0))
-        ttk.Label(max_results_frame, text="Max search results:").pack(side="left")
-        max_results_var = tk.StringVar(value=str(self.max_search_results))
-        max_results_entry = ttk.Entry(max_results_frame, textvariable=max_results_var, width=10)
-        max_results_entry.pack(side="right")
-
-        # Retry Times
-        ttk.Label(content_frame, text="Retry Times:", font=("TkDefaultFont", 10, "bold")).pack(anchor="w", pady=(15, 5))
-
-        # Search retry
-        search_frame = ttk.Frame(content_frame)
-        search_frame.pack(fill="x", pady=(0, 5))
-        ttk.Label(search_frame, text="Search retry (minutes):").pack(side="left")
-        search_retry_var = tk.StringVar(value=str(self.search_retry_minutes))
-        search_entry = ttk.Entry(search_frame, textvariable=search_retry_var, width=10)
-        search_entry.pack(side="right")
-
-        # Like retry
-        like_frame = ttk.Frame(content_frame)
-        like_frame.pack(fill="x", pady=(0, 5))
-        ttk.Label(like_frame, text="Like retry (minutes):").pack(side="left")
-        like_retry_var = tk.StringVar(value=str(self.like_retry_minutes))
-        like_entry = ttk.Entry(like_frame, textvariable=like_retry_var, width=10)
-        like_entry.pack(side="right")
-
-        # Reply retry
-        reply_frame = ttk.Frame(content_frame)
-        reply_frame.pack(fill="x", pady=(0, 5))
-        ttk.Label(reply_frame, text="Reply retry (hours):").pack(side="left")
-        reply_retry_var = tk.StringVar(value=str(self.reply_retry_hours))
-        reply_entry = ttk.Entry(reply_frame, textvariable=reply_retry_var, width=10)
-        reply_entry.pack(side="right")
-
-        # Debug Options
-        ttk.Label(content_frame, text="Debug Options:", font=("TkDefaultFont", 10, "bold")).pack(anchor="w", pady=(15, 5))
-        debug_var = tk.BooleanVar(value=self.debug_mode.get())
-        ttk.Checkbutton(content_frame, text="Enable debug logging", variable=debug_var).pack(anchor="w")
-
-        # Buttons
-        button_frame = ttk.Frame(content_frame)
-        button_frame.pack(fill="x", pady=(20, 0))
-
-        def save_options():
-            try:
-                self.verified_only.set(verified_var.get())
-                self.no_replies.set(no_replies_var.get())
-                self.debug_mode.set(debug_var.get())
-                self.max_search_results = int(max_results_var.get())
-                self.search_retry_minutes = int(search_retry_var.get())
-                self.like_retry_minutes = int(like_retry_var.get())
-                self.reply_retry_hours = int(reply_retry_var.get())
-                self.save_user_options()
-                self.update_status("Options saved successfully")
-                options_window.destroy()
-            except ValueError as e:
-                messagebox.showerror("Invalid Input", f"Please enter valid numbers:\n{str(e)}")
-
-        ttk.Button(button_frame, text="Save", command=save_options).pack(side="right", padx=(5, 0))
-        ttk.Button(button_frame, text="Cancel", command=options_window.destroy).pack(side="right")
 
     def _start_text_selection(self, event):
         """Allow text selection in read-only text widgets"""
@@ -829,11 +774,260 @@ class xApp:
             self.current_text_widget.mark_set(tk.INSERT, tk.END)
             self.current_text_widget.see(tk.INSERT)
 
-if __name__ == "__main__":
-    client = create_client()
-    if client is None:
-        logger.error("Exiting due to authentication failure.")
-    else:
-        root = tk.Tk()
-        app = xApp(root, client)
-        root.mainloop()
+    def _setup_menu_bar(self):
+        """Set up the application menu bar"""
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
+
+        # File menu
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="Exit", command=self.root.quit)
+
+        # Tools menu
+        tools_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Tools", menu=tools_menu)
+        tools_menu.add_command(label="API Diagnostics", command=self._run_api_diagnostics)
+
+        # Help menu
+        help_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label="About", command=self.show_about)
+
+    def show_about(self):
+        """Show about dialog"""
+        messagebox.showinfo("About", "X Post Search and Reply Tool\nVersion 1.0\n\nA tool for searching and interacting with X (Twitter) posts.")
+
+    def _run_api_diagnostics(self):
+        """Run diagnostics to check common API issues"""
+        diag_window = tk.Toplevel(self.root)
+        diag_window.title("API Diagnostics")
+        diag_window.geometry("600x400")
+        diag_window.transient(self.root)
+
+        content_frame = ttk.Frame(diag_window, padding=15)
+        content_frame.pack(fill="both", expand=True)
+
+        # Header
+        header_label = ttk.Label(content_frame, text="🔧 API Diagnostics",
+                                font=("TkDefaultFont", 12, "bold"))
+        header_label.pack(anchor="w", pady=(0, 10))
+
+        # Results text area
+        text_frame = ttk.Frame(content_frame)
+        text_frame.pack(fill="both", expand=True)
+
+        diag_text = tk.Text(text_frame, wrap="word", font=("TkDefaultFont", 9))
+        scrollbar = ttk.Scrollbar(text_frame, command=diag_text.yview)
+        diag_text.configure(yscrollcommand=scrollbar.set)
+
+        diag_text.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        # Run diagnostics
+        def run_checks():
+            diag_text.delete("1.0", tk.END)
+            diag_text.insert("1.0", "🔍 Running API Diagnostics...\n\n")
+
+            # Check 1: Credentials file
+            diag_text.insert(tk.END, "📁 Checking credentials file...\n")
+            if os.path.exists("cred.env"):
+                diag_text.insert(tk.END, "✅ cred.env file exists\n")
+            else:
+                diag_text.insert(tk.END, "❌ cred.env file missing - create this file with your API credentials\n")
+
+            # Check 2: Environment variables
+            diag_text.insert(tk.END, "\n🔑 Checking API credentials...\n")
+            required_vars = ['API_KEY', 'API_SECRET', 'ACCESS_TOKEN', 'ACCESS_TOKEN_SECRET', 'BEARER_TOKEN']
+            missing_vars = []
+            for var in required_vars:
+                if not os.getenv(var):
+                    missing_vars.append(var)
+                else:
+                    diag_text.insert(tk.END, f"✅ {var} is set\n")
+
+            if missing_vars:
+                diag_text.insert(tk.END, f"❌ Missing credentials: {', '.join(missing_vars)}\n")
+                diag_text.insert(tk.END, "   Add these to your cred.env file\n")
+
+            # Check 3: API permissions
+            diag_text.insert(tk.END, "\n🔐 Checking API permissions...\n")
+            diag_text.insert(tk.END, "ℹ️  For write operations (likes, replies), ensure your app has:\n")
+            diag_text.insert(tk.END, "   • Read and Write permissions in Twitter Developer Portal\n")
+            diag_text.insert(tk.END, "   • OAuth 1.1a authentication (not just Bearer token)\n")
+
+            # Check 4: Common issues
+            diag_text.insert(tk.END, "\n🚨 Common Issues & Solutions:\n\n")
+
+            diag_text.insert(tk.END, "400 Bad Request:\n")
+            diag_text.insert(tk.END, "• Check tweet length (max 280 characters)\n")
+            diag_text.insert(tk.END, "• Verify date formats in search parameters\n")
+            diag_text.insert(tk.END, "• Ensure tweet IDs are valid\n\n")
+
+            diag_text.insert(tk.END, "403 Forbidden:\n")
+            diag_text.insert(tk.END, "• Enable write permissions in Developer Portal\n")
+            diag_text.insert(tk.END, "• Use OAuth 1.1a (not just Bearer token)\n")
+            diag_text.insert(tk.END, "• Check if target tweet is protected/private\n\n")
+
+            diag_text.insert(tk.END, "401 Unauthorized:\n")
+            diag_text.insert(tk.END, "• Regenerate API keys and tokens\n")
+            diag_text.insert(tk.END, "• Check token expiration\n")
+            diag_text.insert(tk.END, "• Verify app permissions\n\n")
+
+            diag_text.insert(tk.END, "429 Rate Limited:\n")
+            diag_text.insert(tk.END, "• Wait for rate limit to reset\n")
+            diag_text.insert(tk.END, "• Reduce request frequency\n")
+            diag_text.insert(tk.END, "• Consider upgrading API plan\n")
+
+            diag_text.config(state="disabled")
+
+        # Run diagnostics on window open
+        diag_window.after(100, run_checks)
+
+        # Buttons
+        button_frame = ttk.Frame(content_frame)
+        button_frame.pack(fill="x", pady=(15, 0))
+
+        def close_window():
+            diag_window.destroy()
+
+        ttk.Button(button_frame, text="Close", command=close_window).pack(side="right")
+
+        # Handle window close
+        diag_window.protocol("WM_DELETE_WINDOW", close_window)
+
+    def _format_api_error_details(self, error_type, endpoint, request_params, response, error_message):
+        """Format comprehensive API error details for better debugging"""
+        details = f"{error_type}: {error_message}"
+
+        # Add request information
+        details += f"\n📡 Endpoint: {endpoint}"
+
+        if request_params:
+            # Mask sensitive information
+            safe_params = {}
+            for key, value in request_params.items():
+                if 'token' in key.lower() or 'key' in key.lower():
+                    safe_params[key] = "***MASKED***"
+                else:
+                    safe_params[key] = value
+            details += f"\n📋 Parameters: {safe_params}"
+
+        # Add response information if available
+        if response:
+            details += f"\n📊 Status Code: {response.status_code}"
+
+            # Add specific troubleshooting for common errors
+            if response.status_code == 400:
+                details += "\n🚨 400 Bad Request - Common causes:"
+                details += "\n   • Invalid request parameters or malformed data"
+                details += "\n   • Tweet text too long or contains invalid characters"
+                details += "\n   • Invalid date format in search parameters"
+                details += "\n   • Duplicate tweet content"
+                details += "\n💡 Check your input data and try again"
+            elif response.status_code == 403:
+                details += "\n🚫 403 Forbidden - Common causes:"
+                details += "\n   • Missing write permissions for likes/replies"
+                details += "\n   • Tweet is protected/private"
+                details += "\n   • Account suspended or restricted"
+                details += "\n   • Missing OAuth write scope"
+                details += "\n💡 Check your app permissions and tweet visibility"
+
+            # Try to get Twitter API error details
+            try:
+                if hasattr(response, 'json'):
+                    error_data = response.json()
+                    if 'errors' in error_data and error_data['errors']:
+                        api_error = error_data['errors'][0]
+                        if 'message' in api_error:
+                            details += f"\n❌ API Message: {api_error['message']}"
+                        if 'code' in api_error:
+                            details += f"\n🔢 Error Code: {api_error['code']}"
+                            # Add documentation link for common errors
+                            doc_link = self._get_error_documentation_link(api_error['code'])
+                            if doc_link:
+                                details += f"\n📖 Documentation: {doc_link}"
+
+                            # Add specific troubleshooting for common error codes
+                            troubleshooting = self._get_error_troubleshooting(api_error['code'])
+                            if troubleshooting:
+                                details += f"\n🔧 Troubleshooting: {troubleshooting}"
+            except Exception:
+                pass
+
+            # Add rate limit information if available
+            if hasattr(response, 'headers'):
+                rate_limit_remaining = response.headers.get('X-Rate-Limit-Remaining')
+                rate_limit_reset = response.headers.get('X-Rate-Limit-Reset')
+                if rate_limit_remaining:
+                    details += f"\n⏱️ Rate Limit Remaining: {rate_limit_remaining}"
+                if rate_limit_reset:
+                    try:
+                        reset_time = datetime.datetime.fromtimestamp(int(rate_limit_reset))
+                        details += f"\n🔄 Rate Limit Resets: {reset_time.strftime('%H:%M:%S UTC')}"
+                    except:
+                        details += f"\n🔄 Rate Limit Reset: {rate_limit_reset}"
+
+        return details
+
+    def _get_error_documentation_link(self, error_code):
+        """Get documentation link for common Twitter API error codes"""
+        error_links = {
+            32: "https://developer.twitter.com/en/docs/authentication/api-reference/authenticate",
+            34: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/lookup/api-reference/get-tweets-id",
+            36: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            44: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            64: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            88: "https://developer.twitter.com/en/docs/rate-limits",
+            89: "https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code",
+            99: "https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code",
+            130: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/search/api-reference/get-tweets-search-recent",
+            131: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/search/api-reference/get-tweets-search-recent",
+            135: "https://developer.twitter.com/en/docs/authentication/api-reference/authenticate",
+            144: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/delete-tweets-id",
+            179: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/lookup/api-reference/get-tweets-id",
+            185: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            186: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            187: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            200: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            220: "https://developer.twitter.com/en/docs/rate-limits",
+            226: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/filtered-stream/api-reference/get-tweets-search-stream",
+            261: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            326: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            327: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            349: "https://developer.twitter.com/en/docs/authentication/oauth-2-0/authorization-code",
+            415: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets",
+            416: "https://developer.twitter.com/en/docs/twitter-api/v2/tweets/manage-tweets/api-reference/post-tweets"
+        }
+        return error_links.get(error_code)
+
+    def _get_error_troubleshooting(self, error_code):
+        """Get specific troubleshooting steps for common Twitter API error codes"""
+        troubleshooting = {
+            32: "Your app's API keys are invalid. Regenerate them in the Twitter Developer Portal.",
+            34: "The tweet you're trying to access doesn't exist or has been deleted.",
+            36: "You don't have permission to perform this action on this tweet.",
+            44: "This tweet has already been liked by your account.",
+            64: "Your account is suspended and cannot perform write actions.",
+            88: "Rate limit exceeded. Wait for the reset time shown above, or upgrade your API plan.",
+            89: "Your access token has expired. Re-authenticate your application.",
+            99: "Unable to verify your credentials. Check your API keys and access tokens.",
+            130: "Twitter is temporarily over capacity. Wait a few minutes and try again.",
+            131: "Internal Twitter error. This is usually temporary - try again later.",
+            135: "Authentication failed. Check your API keys, tokens, and OAuth flow.",
+            144: "The tweet you're trying to delete doesn't exist or isn't yours to delete.",
+            179: "You don't have permission to view this tweet (it's protected).",
+            185: "You are posting too frequently. Wait before posting again.",
+            186: "Your tweet is too long. Shorten it to fit within Twitter's character limit.",
+            187: "You're trying to post a duplicate tweet. Twitter doesn't allow exact duplicates.",
+            200: "You can't reply to a tweet that doesn't allow replies.",
+            220: "Your credentials don't have the required permissions for this action.",
+            226: "This request looks like it might be automated. Twitter may have flagged your activity.",
+            261: "Application cannot perform write actions. Check your app permissions in Developer Portal.",
+            326: "You have been temporarily locked out due to unusual activity. Wait and try again.",
+            327: "You cannot reply to this tweet (it may be from a blocked account).",
+            349: "You don't have the correct OAuth scope for this operation.",
+            415: "Unsupported media type. Check your file format and try again.",
+            416: "The tweet you're trying to reply to doesn't exist."
+        }
+        return troubleshooting.get(error_code)

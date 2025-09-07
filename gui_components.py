@@ -24,14 +24,32 @@ class OptionsWindow:
         self.no_replies_var = tk.BooleanVar(value=self.app.no_replies.get())
         ttk.Checkbutton(content_frame, text="Exclude replies in search", variable=self.no_replies_var).pack(anchor="w")
 
-        ttk.Label(content_frame, text="API License Level:", font=bold_font).pack(anchor="w", pady=(GUIConfig.PADY * 2, GUIConfig.PADY))
-        self.license_var = tk.StringVar(value=self.app.license_level.get())
-        ttk.Combobox(content_frame, textvariable=self.license_var, values=list(RateLimits.LIMITS.keys()), state="readonly").pack(anchor="w")
+        ttk.Label(content_frame, text="Max Search Results:", font=bold_font).pack(anchor="w", pady=(GUIConfig.PADY * 2, GUIConfig.PADY))
+        self.max_results_var = tk.StringVar(value=str(self.app.max_search_results))
+        ttk.Entry(content_frame, textvariable=self.max_results_var, width=10).pack(anchor="w")
 
-        ttk.Label(content_frame, text="Fallback Retry Interval:", font=bold_font).pack(anchor="w", pady=(GUIConfig.PADY * 2, GUIConfig.PADY))
-        self.retry_interval_var = tk.StringVar(value=str(self.app.retry_interval // 60))
-        ttk.Combobox(content_frame, textvariable=self.retry_interval_var, values=["5", "15", "30", "60"], state="readonly").pack(anchor="w")
-        ttk.Label(content_frame, text="(in minutes)").pack(anchor="w")
+        ttk.Label(content_frame, text="Retry Times:", font=bold_font).pack(anchor="w", pady=(GUIConfig.PADY * 2, GUIConfig.PADY))
+
+        # Search retry
+        search_frame = ttk.Frame(content_frame)
+        search_frame.pack(fill="x", pady=(0, GUIConfig.PADY))
+        ttk.Label(search_frame, text="Search retry (minutes):").pack(side="left")
+        self.search_retry_var = tk.StringVar(value=str(self.app.search_retry_minutes))
+        ttk.Entry(search_frame, textvariable=self.search_retry_var, width=10).pack(side="right")
+
+        # Like retry
+        like_frame = ttk.Frame(content_frame)
+        like_frame.pack(fill="x", pady=(0, GUIConfig.PADY))
+        ttk.Label(like_frame, text="Like retry (minutes):").pack(side="left")
+        self.like_retry_var = tk.StringVar(value=str(self.app.like_retry_minutes))
+        ttk.Entry(like_frame, textvariable=self.like_retry_var, width=10).pack(side="right")
+
+        # Reply retry
+        reply_frame = ttk.Frame(content_frame)
+        reply_frame.pack(fill="x", pady=(0, GUIConfig.PADY))
+        ttk.Label(reply_frame, text="Reply retry (hours):").pack(side="left")
+        self.reply_retry_var = tk.StringVar(value=str(self.app.reply_retry_hours))
+        ttk.Entry(reply_frame, textvariable=self.reply_retry_var, width=10).pack(side="right")
 
         ttk.Label(content_frame, text="Debug Options:", font=bold_font).pack(anchor="w", pady=(GUIConfig.PADY * 2, GUIConfig.PADY))
         self.debug_var = tk.BooleanVar(value=self.app.debug_mode.get())

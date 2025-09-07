@@ -724,5 +724,17 @@
         "timestamp": "2025-09-07T13:39:42.074565",
         "duration": 0.6234805583953857,
         "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:54:42.984922",
+        "duration": 0.491985559463501,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:54:42.988208",
+        "duration": 0.500643253326416,
+        "response": "Failed"
     }
 ]
