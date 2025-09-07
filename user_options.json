@@ -1,7 +1,9 @@
 {
-    "license_level": "Free",
     "verified_only": true,
     "no_replies": true,
-    "retry_interval": 1800,
-    "debug_mode": false
+    "debug_mode": true,
+    "search_retry_minutes": 15,
+    "like_retry_minutes": 15,
+    "reply_retry_hours": 24,
+    "max_search_results": 5
 }

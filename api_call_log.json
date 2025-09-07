@@ -340,5 +340,389 @@
         "timestamp": "2025-03-07T22:25:41.230291",
         "duration": 0.2912423610687256,
         "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-08T16:33:18.373924",
+        "duration": 0.30823326110839844,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-08T16:33:38.018942",
+        "duration": 0.31250429153442383,
+        "response": "{'data': {'liked': True}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-08T16:33:38.205824",
+        "duration": 0.16065120697021484,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-08T16:33:38.230673",
+        "duration": 0.18576455116271973,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-08T16:33:38.256192",
+        "duration": 0.21128320693969727,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T20:13:14.199827",
+        "duration": 0.2538876533508301,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T20:13:14.225525",
+        "duration": 0.27963852882385254,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T20:20:12.913585",
+        "duration": 0.18938326835632324,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T20:20:12.939884",
+        "duration": 0.2157433032989502,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T20:28:30.317774",
+        "duration": 0.3485279083251953,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "POST /2/tweets",
+        "timestamp": "2025-03-11T20:33:08.539096",
+        "duration": 0.3794558048248291,
+        "response": "{'data': {'id': '1899529036033847537', 'edit_history_tweet_ids': ['1899529036033847537'], 'text': \"@Ian_california @grok It's true! AI coding is getting insanely good \ud83d\udd25 I built X-AI-reply with Grok \u2014 a Python tool to search posts and then write replies and post them for you, plus like posts if you want. All copy/paste, no manually written code. https://t.co/0mFVLlKXv7\"}}"
+    },
+    {
+        "api_ref": "POST /2/tweets",
+        "timestamp": "2025-03-11T20:33:08.876062",
+        "duration": 0.30928778648376465,
+        "response": "{'data': {'text': \"@JEMSUAi It's true! AI coding is getting insanely good \ud83d\udd25 I built X-AI-reply with Grok \u2014 a Python tool to search posts and then write replies and post them for you, plus like posts if you want. All copy/paste, no manually written code. https://t.co/0mFVLlKXv7\", 'id': '1899529037552156863', 'edit_history_tweet_ids': ['1899529037552156863']}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T20:33:09.137811",
+        "duration": 0.2335214614868164,
+        "response": "{'data': {'liked': True}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T20:33:09.329543",
+        "duration": 0.16321897506713867,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T20:33:09.359417",
+        "duration": 0.19352149963378906,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T20:33:09.389045",
+        "duration": 0.22314739227294922,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-03-11T21:09:51.914475",
+        "duration": 0.35001611709594727,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T21:11:34.562848",
+        "duration": 0.19751691818237305,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T21:11:34.590143",
+        "duration": 0.22522640228271484,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-11T21:11:34.620113",
+        "duration": 0.25519895553588867,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-12T20:33:26.116363",
+        "duration": 0.35901904106140137,
+        "response": "{'data': {'liked': True}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-12T20:33:26.331549",
+        "duration": 0.17744183540344238,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-12T20:33:26.358887",
+        "duration": 0.2140178680419922,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-12T20:33:26.397305",
+        "duration": 0.2524375915527344,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-13T20:33:44.361081",
+        "duration": 0.35415196418762207,
+        "response": "{'data': {'liked': True}}"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-13T20:33:44.573754",
+        "duration": 0.17363691329956055,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-13T20:33:44.602399",
+        "duration": 0.21200799942016602,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-03-13T20:33:44.635923",
+        "duration": 0.24553275108337402,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-04-09T20:35:37.354410",
+        "duration": 0.47419285774230957,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-04-09T20:35:57.256741",
+        "duration": 0.36634182929992676,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-04-09T20:35:57.287051",
+        "duration": 0.397019624710083,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T11:52:09.705802",
+        "duration": 0.47966885566711426,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T11:52:09.708953",
+        "duration": 0.4831504821777344,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T11:53:55.526294",
+        "duration": 0.4790918827056885,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T11:53:55.528293",
+        "duration": 0.4814469814300537,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:02:07.700366",
+        "duration": 0.49033522605895996,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:02:07.703187",
+        "duration": 0.4938387870788574,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:06:58.200579",
+        "duration": 0.6221745014190674,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T12:11:17.022408",
+        "duration": 0.47687435150146484,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T12:11:17.024715",
+        "duration": 0.4795548915863037,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:18:10.821878",
+        "duration": 0.49630212783813477,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:18:10.824961",
+        "duration": 0.5002937316894531,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:21:25.592480",
+        "duration": 0.4799385070800781,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:21:25.596563",
+        "duration": 0.48465800285339355,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:41:37.178814",
+        "duration": 0.762620210647583,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:53:17.543069",
+        "duration": 0.4947793483734131,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T12:53:17.546675",
+        "duration": 0.6289441585540771,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:08:18.671312",
+        "duration": 0.6939668655395508,
+        "response": "<Response [200]>"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:11:23.104864",
+        "duration": 0.4805021286010742,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:11:23.107555",
+        "duration": 0.4848799705505371,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:04.304547",
+        "duration": 0.16319966316223145,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:04.307178",
+        "duration": 0.17242980003356934,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:08.484614",
+        "duration": 0.16253185272216797,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:08.487755",
+        "duration": 0.16861748695373535,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:10.658445",
+        "duration": 0.15932297706604004,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:10.661674",
+        "duration": 0.16844773292541504,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:12.833084",
+        "duration": 0.15961027145385742,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "POST /2/users/:id/likes",
+        "timestamp": "2025-09-07T13:12:12.836074",
+        "duration": 0.16734766960144043,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:19:29.819579",
+        "duration": 0.4833791255950928,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:19:29.824462",
+        "duration": 0.6173126697540283,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:34:30.717078",
+        "duration": 0.4929780960083008,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:34:30.720852",
+        "duration": 0.5017318725585938,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:39:42.071122",
+        "duration": 0.497211217880249,
+        "response": "Failed"
+    },
+    {
+        "api_ref": "GET /2/tweets/search/recent",
+        "timestamp": "2025-09-07T13:39:42.074565",
+        "duration": 0.6234805583953857,
+        "response": "Failed"
     }
 ]
